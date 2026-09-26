@@ -1,0 +1,7 @@
+.cache/
+limine/
+build/
+
+kernel
+compile_commands.json
+kernel.iso

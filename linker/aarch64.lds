@@ -1,7 +1,7 @@
-/* https://github.com/Limine-Bootloader/limine-c-template/blob/trunk/kernel/linker-scripts/x86_64.lds */
+/* https://github.com/Limine-Bootloader/limine-c-template/blob/trunk/kernel/linker-scripts/aarch64.lds */
 
-/* Tell the linker that we want an x86_64 ELF64 output file */
-OUTPUT_FORMAT(elf64-x86-64)
+/* Tell the linker that we want an aarch64 ELF64 output file */
+OUTPUT_FORMAT(elf64-littleaarch64)
 
 /* We want the symbol kmain to be our entry point */
 ENTRY(kmain)
@@ -69,8 +69,10 @@ SECTIONS
     } :data
 
     /* Discard .note.* and .eh_frame* since they may cause issues on some hosts. */
+    /* Also discard .ARM.attributes, which newer GCCs emit. */
     /DISCARD/ : {
         *(.eh_frame*)
         *(.note .note.*)
+        *(.ARM.attributes)
     }
 }
