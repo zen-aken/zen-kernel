@@ -48,12 +48,17 @@ iso: $(TARGET)
 
 	limine/limine bios-install $(ISO)
 
-# Run kernel
-run: iso
-	$(QEMU) -cdrom $(ISO)
-
 # Clean build files
 clean:
 	rm -rf build $(TARGET) $(ISO)
 
-.PHONY: build iso run clean
+# Run kernel
+run: iso
+	$(QEMU) -cdrom $(ISO)
+
+# Format file with clang-format
+format:
+	find src include -type f \( -name '*.c' -o -name '*.h' \) \
+		-exec clang-format -i {} +
+
+.PHONY: build iso run clean format
