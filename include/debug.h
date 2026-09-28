@@ -1,7 +1,7 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#include <definition.h>
+#include <types.h>
 
 void kprint(char* s);
 void kprint_new_line();

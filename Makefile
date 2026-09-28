@@ -14,6 +14,7 @@ SRC = \
 	src/main.c \
 	src/debug.c \
 	src/string.c \
+	src/arch/x64/gdt.c \
 	src/arch/x64/serial.c
 
 OBJ = $(SRC:src/%.c=build/%.o)
@@ -58,6 +59,8 @@ clean:
 # Run kernel
 run: iso
 	$(QEMU) -cdrom $(ISO) -serial stdio
+	# -d int -D qemu.log -no-reboot -no-shutdown -machine smm=off
+	# for debug
 
 # Format file with clang-format
 format:

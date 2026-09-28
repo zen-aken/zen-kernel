@@ -1,4 +1,3 @@
-#include <definition.h>
 #include <string.h>
 
 /**
