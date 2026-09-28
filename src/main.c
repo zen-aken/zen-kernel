@@ -1,19 +1,24 @@
-#include <limine.h>
+#include "limine_headers.h"
+#include <constants.h>
 
-#define COM1 0x3F8
+#include <debug.h>
+#include <definition.h>
 
-static inline void outb(unsigned short port, unsigned char value) {
-    __asm__ volatile("outb %0, %1" : : "a"(value), "Nd"(port));
-}
-
-void serial_write(char c) {
-    outb(COM1, c);
+void hcf() {
+#if ARCH == __x64__
+    asm volatile("hlt");
+#elif ARCH == __aarch64__
+    asm volatile("wfe");
+#endif
 }
 
 void kmain(void) {
-    serial_write('H');
-    serial_write('i');
-
+    kprint("merhaba\n");
+    uint64_t my_hex = 0xDEADBEEFCAFEBABE;
+    kprint_hex(my_hex);
+    kprint_new_line();
+    long long int test_number = 8273643;
+    kprint_int(test_number);
     while (1)
-        __asm__ volatile("hlt");
+        hcf();
 }

@@ -11,7 +11,10 @@ LDFLAGS = -T linker/x86_64.lds -nostdlib -static -no-pie -m elf_x86_64 -z max-pa
 TARGET = kernel
 
 SRC = \
-	src/main.c
+	src/main.c \
+	src/debug.c \
+	src/string.c \
+	src/arch/x64/serial.c
 
 OBJ = $(SRC:src/%.c=build/%.o)
 
@@ -25,7 +28,7 @@ $(TARGET): $(OBJ)
 	$(LD) $(LDFLAGS) $(OBJ) -o $@
 
 build/%.o: src/%.c
-	@mkdir -p build
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Create ISO
@@ -54,7 +57,7 @@ clean:
 
 # Run kernel
 run: iso
-	$(QEMU) -cdrom $(ISO)
+	$(QEMU) -cdrom $(ISO) -serial stdio
 
 # Format file with clang-format
 format:
