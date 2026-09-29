@@ -6,7 +6,7 @@
  * @param hex The value to convert.
  * @return buffer
  */
-char* hex_to_str(char buffer[19], uint64_t hex) {
+char* hex_to_str(char buffer[MAX_HEX_BUFFER_SIZE], uint64_t hex) {
     const char hex_table[] = "0123456789ABCDEF";
 
     buffer[0] = '0';
@@ -29,7 +29,7 @@ char* hex_to_str(char buffer[19], uint64_t hex) {
     @param number The signed 64-bit integer to convert.
     @return The provided buffer containing the resulting string.
     */
-char* int_to_str(char buffer[22], int64_t number) {
+char* int_to_str(char buffer[MAX_INT_BUFFER_SIZE], int64_t number) {
     const char numbers[] = "0123456789";
 
     if (number == 0) {

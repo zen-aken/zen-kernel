@@ -16,6 +16,7 @@ SRC = \
 	src/string.c \
 	src/arch/x64/gdt.c \
 	src/arch/x64/idt.c \
+	src/arch/x64/pic.c \
 	src/arch/x64/isr.S \
 	src/arch/x64/serial.c
 

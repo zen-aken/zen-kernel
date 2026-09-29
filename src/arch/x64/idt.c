@@ -171,38 +171,10 @@ void init_idt() {
 #if DEBUG == 1
     kprint("Setting IDT entries...\n");
 #endif
-    set_idt_entry(0, isr_table[0], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(1, isr_table[1], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(2, isr_table[2], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(3, isr_table[3], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(4, isr_table[4], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(5, isr_table[5], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(6, isr_table[6], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(7, isr_table[7], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(8, isr_table[8], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(9, isr_table[9], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(10, isr_table[10], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(11, isr_table[11], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(12, isr_table[12], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(13, isr_table[13], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(14, isr_table[14], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(15, isr_table[15], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(16, isr_table[16], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(17, isr_table[17], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(18, isr_table[18], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(19, isr_table[19], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(20, isr_table[20], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(21, isr_table[21], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(22, isr_table[22], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(23, isr_table[23], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(24, isr_table[24], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(25, isr_table[25], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(26, isr_table[26], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(27, isr_table[27], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(28, isr_table[28], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(29, isr_table[29], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(30, isr_table[30], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-    set_idt_entry(31, isr_table[31], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
+for (size_t i = 0; i < 32; i++) {
+    set_idt_entry(i, isr_table[i], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
+}
+
 
 #if DEBUG == 1
     kprint("Setting IDTR pointer...\n");

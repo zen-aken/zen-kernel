@@ -57,5 +57,5 @@ void init_gdt() {
 #endif
     gdt_reload_segments(0x08, 0x10);
 
-    kprint("GDT initialized.\n");
+    kprint("GDT initialized\n");
 }
