@@ -15,9 +15,13 @@ SRC = \
 	src/debug.c \
 	src/string.c \
 	src/arch/x64/gdt.c \
+	src/arch/x64/idt.c \
+	src/arch/x64/isr.S \
 	src/arch/x64/serial.c
 
-OBJ = $(SRC:src/%.c=build/%.o)
+
+OBJ = $(filter %.o,$(SRC:src/%.c=build/%.o))
+OBJ += $(patsubst src/%.S,build/%.o,$(filter %.S,$(SRC)))
 
 ISO = kernel.iso
 ISO_ROOT = build/iso
@@ -29,6 +33,10 @@ $(TARGET): $(OBJ)
 	$(LD) $(LDFLAGS) $(OBJ) -o $@
 
 build/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+build/%.o: src/%.S
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 

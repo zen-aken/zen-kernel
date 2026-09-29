@@ -16,7 +16,7 @@ char* hex_to_str(char buffer[19], uint64_t hex) {
         buffer[i + 2] = hex_table[(hex >> ((15 - i) * 4)) & 0xF];
     }
 
-    buffer[19] = '\0';
+    buffer[18] = '\0';
 
     return buffer;
 }

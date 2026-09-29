@@ -3,6 +3,7 @@
 
 #ifdef __x86_64__
 #include "arch/x64/gdt.h"
+#include "arch/x64/idt.h"
 #endif
 
 void hcf() {
@@ -15,6 +16,7 @@ void hcf() {
 
 void kmain(void) {
     init_gdt();
+    init_idt();
 
     while (1)
         hcf();
