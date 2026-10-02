@@ -7,6 +7,10 @@ void kprint(const char* s) {
     serial_print(s);
 }
 
+void kput_char(const char c) {
+    serial_put_char(c);
+}
+
 void kprint_new_line() {
     serial_print("\n");
 }

@@ -4,7 +4,7 @@ LD = ld
 QEMU = qemu-system-x86_64
 
 # Flags
-CFLAGS = -ffreestanding -fno-stack-protector -mno-red-zone -Wall -Wextra -Iinclude -Iinclude/limine-protocol/include
+CFLAGS = -g -ffreestanding -fno-stack-protector -mno-red-zone -Wall -Wextra -Iinclude -Iinclude/limine-protocol/include
 LDFLAGS = -T linker/x86_64.lds -nostdlib -static -no-pie -m elf_x86_64 -z max-page-size=0x1000
 
 # Files
@@ -14,11 +14,13 @@ SRC = \
 	src/main.c \
 	src/debug.c \
 	src/string.c \
+	src/limine_headers.c \
+	src/acpi/xsdt.c \
 	src/arch/x64/gdt.c \
 	src/arch/x64/idt.c \
 	src/arch/x64/pic.c \
 	src/arch/x64/isr.S \
-	src/arch/x64/serial.c
+	src/arch/x64/serial.c \
 
 
 OBJ = $(filter %.o,$(SRC:src/%.c=build/%.o))
@@ -67,7 +69,11 @@ clean:
 
 # Run kernel
 run: iso
-	$(QEMU) -cdrom $(ISO) -serial stdio
+	$(QEMU) \
+	-cdrom $(ISO) \
+	-serial stdio \
+	-machine q35 \
+	-drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.4m.fd \
 	# -d int -D qemu.log -no-reboot -no-shutdown -machine smm=off
 	# for debug
 

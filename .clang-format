@@ -25,3 +25,5 @@ AlignTrailingComments: true
 # Includes
 SortIncludes: true
 IncludeBlocks: Preserve
+
+IndentPPDirectives: BeforeHash

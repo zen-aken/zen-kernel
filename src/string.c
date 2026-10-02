@@ -1,3 +1,4 @@
+#include <types.h>
 #include <string.h>
 
 /**
@@ -67,4 +68,46 @@ char* int_to_str(char buffer[MAX_INT_BUFFER_SIZE], int64_t number) {
     buffer[length] = '\0';
 
     return buffer;
+}
+
+/**
+ * @brief Compare two memory blocks byte by byte.
+ *
+ * Does not stop at null bytes; only the first @p n bytes are compared.
+ *
+ * @param a First memory block.
+ * @param b Second memory block.
+ * @param n Number of bytes to compare.
+ *
+ * @return 0 if the blocks are equal, a negative value if the first
+ *         differing byte in @p a is smaller than in @p b, a positive
+ *         value if it is greater.
+ */
+int memcmp(const void* a, const void* b, size_t n) {
+    const uint8_t *p = a, *q = b;
+    for (int i = 0; i < n; i++) {
+        if (p[i] != q[i]) {
+            return p[i] - q[i];
+        }
+    }
+    return 0;
+}
+
+/**
+ * @brief Copies @p n bytes from @p src to @p dst.
+ *
+ * Regions must not overlap; use memmove() for overlapping buffers.
+ *
+ * @param dst Destination buffer (at least @p n bytes).
+ * @param src Source buffer (at least @p n bytes).
+ * @param n   Number of bytes to copy.
+ * @return    @p dst.
+ */
+void* memcpy(void* dst, const void* src, size_t n) {
+    uint8_t *_dst = (uint8_t *)dst, *_src = (uint8_t *)src;
+    for (int i = 0; i < n; i++) {
+        _dst[i] = _src[i];
+    }
+
+    return (void *)_dst;
 }

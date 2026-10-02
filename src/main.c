@@ -1,10 +1,11 @@
-#include "limine_headers.h"
+#include <acpi/xsdt.h>
 #include <constants.h>
+#include <stdint.h>
 
-#ifdef __x86_64__
-#include "arch/x64/gdt.h"
-#include "arch/x64/idt.h"
-#include "arch/x64/pic.h"
+#if ARCH == __x64__
+    #include "arch/x64/gdt.h"
+    #include "arch/x64/idt.h"
+    #include "arch/x64/pic.h"
 #endif
 
 void hcf() {

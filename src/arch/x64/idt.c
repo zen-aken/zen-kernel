@@ -1,6 +1,7 @@
 #include "arch/x64/idt.h"
 #include <constants.h>
 #include <debug.h>
+#include <stdint.h>
 
 struct IDTR idtr;
 struct IDT_Descriptor idt[MAX_IDT_ENTRY];
@@ -158,6 +159,13 @@ void isr_handler(struct Interrupt_Frame* f) {
     kprint_reg("r15:", f->r15);
     kprint_new_line();
 
+    uint64_t cr2;
+    if (f->vector == 0xE) {
+        asm volatile("mov %%cr2, %0" : "=r"(cr2));
+        kprint_reg("cr2: ", cr2);
+        kprint_new_line();
+    }
+
     kprint("-------------------------------------\n");
 
     while (1) {
@@ -171,10 +179,9 @@ void init_idt() {
 #if DEBUG == 1
     kprint("Setting IDT entries...\n");
 #endif
-for (size_t i = 0; i < 32; i++) {
-    set_idt_entry(i, isr_table[i], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
-}
-
+    for (size_t i = 0; i < 32; i++) {
+        set_idt_entry(i, isr_table[i], KERNEL_ATTRIBUTES, KERNEL_SEGMENT, 0);
+    }
 
 #if DEBUG == 1
     kprint("Setting IDTR pointer...\n");

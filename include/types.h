@@ -1,10 +1,15 @@
 #ifndef definition
 #define definition
 
+// null
+#define NULL ((void*)0)
+
+// bool
 #define bool _Bool
 #define True 1
 #define False 0
 
+// standart types
 typedef __INT8_TYPE__ int8_t;
 typedef __UINT8_TYPE__ uint8_t;
 typedef __INT16_TYPE__ int16_t;

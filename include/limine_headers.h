@@ -1,15 +1,9 @@
-#include <limine.h>
+#ifndef LIMINE_HEADERS_H
+#define LIMINE_HEADERS_H
 
-// Limine version
-__attribute__((used, section(".limine_requests"))) static volatile uint64_t limine_base_revision[] =
-    LIMINE_BASE_REVISION(6);
+#include <types.h>
 
-// Limine start/end header
-__attribute__((
-    used,
-    section(".limine_requests_start"))) static volatile uint64_t limine_requests_start_marker[] =
-    LIMINE_REQUESTS_START_MARKER;
+void* getRSDP();
+uint64_t getHHDM();
 
-__attribute__((
-    used, section(".limine_requests_end"))) static volatile uint64_t limine_requests_end_marker[] =
-    LIMINE_REQUESTS_END_MARKER;
+#endif
