@@ -16,4 +16,4 @@ xorriso -as mkisofs -R -r -J \
 
 ./Limine/limine bios-install zen.iso
 
-qemu-system-x86_64 -cdrom zen.iso -debugcon stdio -no-reboot -d int,cpu_reset
+qemu-system-x86_64 -cdrom zen.iso -no-reboot -d int,cpu_reset -monitor stdio
