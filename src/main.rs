@@ -1,11 +1,14 @@
+#![feature(abi_x86_interrupt)]
 #![no_std]
 #![no_main]
 
 mod arch;
 mod debug;
+mod drivers;
 
+use crate::{arch::x64::idt, debug::Debug};
 use arch::x64::gdt;
-use core::arch::asm;
+use core::{arch::asm, panic::PanicInfo};
 use limine::{
     BaseRevision, RequestsEndMarker, RequestsStartMarker,
     request::{HhdmRequest, MemmapRequest},
@@ -35,11 +38,20 @@ static END: RequestsEndMarker = RequestsEndMarker::new();
 extern "C" fn kernel() -> ! {
     assert!(BASE_REVISION.is_supported());
 
-    gdt::gdt_init();
+    gdt::init();
+    idt::init();
 
     loop {
         unsafe {
             asm!("hlt", options(nomem, nostack));
         }
+    }
+}
+
+#[panic_handler]
+pub fn panic(info: &PanicInfo) -> ! {
+    println!("{}", info.message());
+    loop {
+        unsafe { asm!("cli; hlt") }
     }
 }

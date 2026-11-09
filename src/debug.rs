@@ -1,25 +1,46 @@
-use core::arch::asm;
 use core::fmt::Write;
-use core::panic::PanicInfo;
 
-struct Dbg;
+use crate::arch::x64::io::outb;
+use crate::drivers::serial::ns16550::NS16550_COM1;
 
-impl Write for Dbg {
-    fn write_str(&mut self, s: &str) -> core::fmt::Result {
-        for b in s.bytes() {
-            unsafe {
-                asm!("out dx, al", in("dx") 0xE9u16, in("al") b, options(nomem, nostack));
-            }
+pub struct Debug {}
+
+impl Debug {
+    pub fn serial_print_char(c: u8) {
+        unsafe {
+            outb(NS16550_COM1, c);
         }
+    }
+
+    pub fn serial_print(s: &str) {
+        for c in s.bytes() {
+            Debug::serial_print_char(c);
+        }
+    }
+}
+
+impl Write for Debug {
+    fn write_str(&mut self, s: &str) -> core::fmt::Result {
+        Debug::serial_print(s);
         Ok(())
     }
 }
 
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    unsafe { asm!("cli", options(nomem, nostack)) }
-    let _ = writeln!(Dbg, "\nPANIC: {}", info);
-    loop {
-        unsafe { asm!("hlt", options(nomem, nostack)) }
-    }
+#[macro_export]
+macro_rules! println {
+    ($($arg:tt)*) => {{
+        let _ = core::fmt::Write::write_fmt(
+            &mut $crate::debug::Debug {},
+            format_args!($($arg)*),
+        );
+        $crate::debug::Debug::serial_print("\n");
+    }};
+}
+
+#[macro_export]
+macro_rules! dprintln {
+    ($($arg:tt)*) => {{
+        #[cfg(feature = "debug")]
+        $crate::println!($($arg)*);
+    }};
 }

@@ -8,6 +8,10 @@ name = "zen-kernel"
 test = false
 bench = false
 
+[features]
+debug = []
+default = ["debug"]
+
 [dependencies]
 limine = "0.6.5"
 

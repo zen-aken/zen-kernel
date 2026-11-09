@@ -1,5 +1,7 @@
 use core::arch::asm;
 
+use crate::{dprintln, println};
+
 const GDT_ENTRY_COUNT: usize = 5;
 
 const KERNEL_CODE: u8 = 0b1001_1011; // 0x9B
@@ -13,8 +15,8 @@ const USER_DATA_LIMIT_AND_FLAGS: u8 = 0b1100_1111; // 0xCF
 
 #[repr(C, packed)]
 struct GDTPtr {
-    limit: u16,
-    base: u64,
+    size: u16,
+    offset: u64,
 }
 
 #[repr(C, packed)]
@@ -28,6 +30,16 @@ struct GDTEntry {
 }
 
 impl GDTEntry {
+    /// Creates a GDT entry (descriptor).
+    ///
+    /// # Parameters
+    /// * `limit` - Segment limit (lower 16 bits)
+    /// * `base` - Segment base address (32 bits)
+    /// * `access_byte` - Access byte (Present, DPL, S, Type)
+    /// * `limit_and_flags` - Upper nibble: flags (G, D/B, L, AVL), lower nibble: limit[19:16]
+    ///
+    /// # Returns
+    /// The constructed `GDTEntry`.
     const fn new(limit: u16, base: u32, access_byte: u8, limit_and_flags: u8) -> GDTEntry {
         GDTEntry {
             limit,
@@ -41,17 +53,17 @@ impl GDTEntry {
 }
 
 static GDT: [GDTEntry; GDT_ENTRY_COUNT] = [
-        GDTEntry::new(0xFFFF, 0, 0, 0), // Null
-        GDTEntry::new(0xFFFF, 0, KERNEL_CODE, KERNEL_CODE_LIMIT_AND_FLAGS), // Kernel code
-        GDTEntry::new(0xFFFF, 0, KERNEL_DATA, KERNEL_DATA_LIMIT_AND_FLAGS), // Kernel data
-        GDTEntry::new(0xFFFF, 0, USER_CODE, USER_CODE_LIMIT_AND_FLAGS), // User code
-        GDTEntry::new(0xFFFF, 0, USER_DATA, USER_DATA_LIMIT_AND_FLAGS), // User data
-    ];
+    GDTEntry::new(0xFFFF, 0, 0, 0), // Null
+    GDTEntry::new(0xFFFF, 0, KERNEL_CODE, KERNEL_CODE_LIMIT_AND_FLAGS), // Kernel code
+    GDTEntry::new(0xFFFF, 0, KERNEL_DATA, KERNEL_DATA_LIMIT_AND_FLAGS), // Kernel data
+    GDTEntry::new(0xFFFF, 0, USER_CODE, USER_CODE_LIMIT_AND_FLAGS), // User code
+    GDTEntry::new(0xFFFF, 0, USER_DATA, USER_DATA_LIMIT_AND_FLAGS), // User data
+];
 
 fn load_gdtr() {
     let gdtr = GDTPtr {
-        base: GDT.as_ptr() as u64,
-        limit: (core::mem::size_of_val(&GDT) - 1) as u16,
+        size: (core::mem::size_of_val(&GDT) - 1) as u16,
+        offset: GDT.as_ptr() as u64,
     };
 
     unsafe {
@@ -61,7 +73,11 @@ fn load_gdtr() {
             in(reg) &gdtr,
             options(readonly, nostack, preserves_flags)
         );
+    }
+}
 
+fn refresh_segments() {
+    unsafe {
         // Reload CS
         asm!(
             "push 0x08",
@@ -88,6 +104,11 @@ fn load_gdtr() {
     }
 }
 
-pub fn gdt_init() {
+pub fn init() {
+    dprintln!("Initializing GDT.");
     load_gdtr();
+    dprintln!("GDTR loaded.");
+    refresh_segments();
+    dprintln!("Segments refreshed.");
+    println!("GDT Initialized.");
 }

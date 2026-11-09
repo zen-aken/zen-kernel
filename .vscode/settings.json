@@ -1,9 +1,28 @@
 {
     "cSpell.words": [
+        "BOOTX",
+        "cdrom",
+        "dprintln",
+        "emul",
+        "gdtr",
+        "hfsplus",
         "HHDM",
+        "idtr",
+        "lgdt",
+        "lidt",
         "limine",
         "MEMMAP",
+        "mkisofs",
+        "msdos",
         "nomem",
-        "nostack"
+        "nostack",
+        "outb",
+        "outl",
+        "outw",
+        "OVMF",
+        "retfq",
+        "rsvd",
+        "uefi",
+        "xorriso"
     ]
 }
