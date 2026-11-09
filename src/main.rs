@@ -6,8 +6,7 @@ mod arch;
 mod debug;
 mod drivers;
 
-use crate::{arch::x64::idt, debug::Debug};
-use arch::x64::gdt;
+use crate::arch::x64::{gdt, idt, tss};
 use core::{arch::asm, panic::PanicInfo};
 use limine::{
     BaseRevision, RequestsEndMarker, RequestsStartMarker,
@@ -40,6 +39,7 @@ extern "C" fn kernel() -> ! {
 
     gdt::init();
     idt::init();
+    tss::init();
 
     loop {
         unsafe {

@@ -1,4 +1,7 @@
-use crate::{arch::x64::isr::page_fault, dprintln, println};
+use crate::{
+    arch::x64::isr::{double_fault, page_fault},
+    dprintln, println,
+};
 use core::arch::asm;
 
 const IDT_ENTRY_COUNT: usize = 256;
@@ -62,8 +65,14 @@ fn load_idt() {
 
 pub fn init() {
     dprintln!("Initializing IDT.");
+    dprintln!("Setting IDT entry.");
     unsafe {
-        dprintln!("Setting IDT entry.");
+        IDT[8] = IDTEntry::new(
+            double_fault as *const () as usize as u64,
+            KERNEL_CODE_SEGMENT,
+            1,
+            KERNEL_INTERRUPT,
+        );
         IDT[14] = IDTEntry::new(
             page_fault as *const () as usize as u64,
             KERNEL_CODE_SEGMENT,

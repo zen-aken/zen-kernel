@@ -1,5 +1,6 @@
 use core::arch::asm;
 
+#[allow(dead_code)]
 #[inline(always)]
 pub unsafe fn outb(port: u16, val: u8) {
     unsafe {
@@ -7,6 +8,7 @@ pub unsafe fn outb(port: u16, val: u8) {
     }
 }
 
+#[allow(dead_code)]
 #[inline(always)]
 pub unsafe fn inb(port: u16) -> u8 {
     let v: u8;
@@ -16,6 +18,7 @@ pub unsafe fn inb(port: u16) -> u8 {
     v
 }
 
+#[allow(dead_code)]
 #[inline(always)]
 pub unsafe fn outw(port: u16, val: u16) {
     unsafe {
@@ -23,6 +26,7 @@ pub unsafe fn outw(port: u16, val: u16) {
     }
 }
 
+#[allow(dead_code)]
 #[inline(always)]
 pub unsafe fn inw(port: u16) -> u16 {
     let v: u16;
@@ -32,6 +36,7 @@ pub unsafe fn inw(port: u16) -> u16 {
     v
 }
 
+#[allow(dead_code)]
 #[inline(always)]
 pub unsafe fn outl(port: u16, val: u32) {
     unsafe {
@@ -39,6 +44,7 @@ pub unsafe fn outl(port: u16, val: u32) {
     }
 }
 
+#[allow(dead_code)]
 #[inline(always)]
 pub unsafe fn inl(port: u16) -> u32 {
     let v: u32;
