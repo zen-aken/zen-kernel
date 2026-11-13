@@ -64,8 +64,8 @@ fn load_idt() {
 }
 
 pub fn init() {
-    dprintln!("Initializing IDT.");
-    dprintln!("Setting IDT entry.");
+    println!("[IDT] Initializing...");
+    dprintln!("[IDT] Setting IDT entry");
     unsafe {
         IDT[8] = IDTEntry::new(
             double_fault as *const () as usize as u64,
@@ -80,7 +80,7 @@ pub fn init() {
             KERNEL_INTERRUPT,
         );
     }
-    dprintln!("Loading IDTR.");
+    dprintln!("[IDT] Loading IDTR");
     load_idt();
-    println!("IDT initialized.");
+    println!("[IDT] OK");
 }

@@ -73,13 +73,13 @@ static mut KERNEL_STACK: Stack = Stack([0; STACK_SIZE]);
 static mut DF_STACK: Stack = Stack([0; STACK_SIZE]);
 
 pub fn init() {
-    dprintln!("initializing TSS.");
-    dprintln!("Setting up TSS entry's.");
+    println!("[TSS] Initializing...");
+    dprintln!("[TSS] Setting up TSS entry's");
     unsafe {
         TSS_TABLE.rsp[0] = (&raw const KERNEL_STACK as u64) + STACK_SIZE as u64;
         TSS_TABLE.ist[0] = (&raw const DF_STACK as u64) + STACK_SIZE as u64;
         asm!("ltr {0:x}", in(reg) 0x28u16, options(nostack, preserves_flags));
-        dprintln!("TSS pointer loaded.")
+        dprintln!("[TSS] TSS pointer loaded")
     }
-    println!("TSS initialized.")
+    println!("[TSS] OK")
 }

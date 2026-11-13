@@ -1,14 +1,14 @@
 use core::fmt::Write;
 
 use crate::arch::x64::io::outb;
-use crate::drivers::serial::ns16550::NS16550_COM1;
+use crate::drivers::serial::ns16550::SerialPort;
 
 pub struct Debug {}
 
 impl Debug {
     pub fn serial_print_char(c: u8) {
         unsafe {
-            outb(NS16550_COM1, c);
+            outb(SerialPort::COM1 as u16, c);
         }
     }
 
@@ -24,6 +24,16 @@ impl Write for Debug {
         Debug::serial_print(s);
         Ok(())
     }
+}
+
+#[macro_export]
+macro_rules! print{
+    ($($arg:tt)*) => {{
+        let _ = core::fmt::Write::write_fmt(
+            &mut $crate::debug::Debug {},
+            format_args!($($arg)*),
+        );
+    }};
 }
 
 #[macro_export]

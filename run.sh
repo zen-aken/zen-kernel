@@ -16,4 +16,4 @@ xorriso -as mkisofs -R -r -J \
 
 ./Limine/limine bios-install zen.iso
 
-qemu-system-x86_64 -bios /usr/share/edk2/x64/OVMF.4m.fd -cdrom zen.iso -no-reboot -d int,cpu_reset -serial stdio
+qemu-system-x86_64 -bios /usr/share/edk2/x64/OVMF.4m.fd -cdrom zen.iso -no-reboot -d int,cpu_reset -serial stdio -m 256m

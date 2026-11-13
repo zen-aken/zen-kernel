@@ -5,6 +5,7 @@
 mod arch;
 mod debug;
 mod drivers;
+mod memory;
 
 use crate::arch::x64::{gdt, idt, tss};
 use core::{arch::asm, panic::PanicInfo};
@@ -23,11 +24,11 @@ static BASE_REVISION: BaseRevision = BaseRevision::new();
 
 #[used]
 #[unsafe(link_section = ".limine_requests")]
-static HHDM: HhdmRequest = HhdmRequest::new();
+pub static HHDM: HhdmRequest = HhdmRequest::new();
 
 #[used]
 #[unsafe(link_section = ".limine_requests")]
-static MEMMAP: MemmapRequest = MemmapRequest::new();
+pub static MEMMAP: MemmapRequest = MemmapRequest::new();
 
 #[used]
 #[unsafe(link_section = ".limine_requests_end")]
@@ -40,6 +41,7 @@ extern "C" fn kernel() -> ! {
     gdt::init();
     idt::init();
     tss::init();
+    memory::init();
 
     loop {
         unsafe {

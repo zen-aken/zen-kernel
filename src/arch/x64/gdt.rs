@@ -142,12 +142,12 @@ fn refresh_segments() {
 }
 
 pub fn init() {
-    dprintln!("Initializing GDT.");
+    println!("[GDT] Initializing...");
     setup_gdt_entry();
-    dprintln!("GDT entry's has been setup.");
+    dprintln!("[GDT] Setting up GDT entry's");
     load_gdtr();
-    dprintln!("GDTR loaded.");
+    dprintln!("[GDT] GDTR loaded");
     refresh_segments();
-    dprintln!("Segments refreshed.");
-    println!("GDT Initialized.");
+    dprintln!("[GDT] Segments refreshed");
+    println!("[GDT] OK");
 }
